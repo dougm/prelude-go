@@ -120,8 +120,9 @@ ID is used to look-up the pair close.  ACTION and CONTEXT are ignored."
        ;; gofmt on save
        (add-hook 'before-save-hook 'gofmt-before-save nil t)
 
-       ;; Company mode backend
+       ;; Company mode settings
        (set (make-local-variable 'company-backends) '(company-go))
+       (set (make-local-variable 'company-minimum-prefix-length) 0)
 
        ;; El-doc for Go
        (go-eldoc-setup)
