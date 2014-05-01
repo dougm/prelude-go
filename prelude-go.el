@@ -36,12 +36,12 @@
   "GOPATH for prelude-go tools.")
 
 (defvar prelude-go-tools
-  '((gocode    . ("github.com/nsf/gocode"))
-    (golint    . ("github.com/golang/lint/golint"))
-    (godef     . ("code.google.com/p/rog-go/exp/cmd/godef"))
-    (goimports . ("github.com/bradfitz/goimports"))
-    (errcheck  . ("github.com/kisielk/errcheck"))
-    (oracle    . ("code.google.com/p/go.tools/cmd/oracle")))
+  '((gocode    . "github.com/nsf/gocode")
+    (golint    . "github.com/golang/lint/golint")
+    (godef     . "code.google.com/p/rog-go/exp/cmd/godef")
+    (goimports . "github.com/bradfitz/goimports")
+    (errcheck  . "github.com/kisielk/errcheck")
+    (oracle    . "code.google.com/p/go.tools/cmd/oracle"))
   "Import paths for Go tools.")
 
 (prelude-require-packages '(go-mode
@@ -58,7 +58,7 @@
 (when prelude-go-path
   ;; TODO: oracle.el is not package.el compliant
   (add-to-list 'load-path (concat prelude-go-path "/src/"
-                                  (nth 1 (assq 'oracle prelude-go-tools))))
+                                  (cdr (assq 'oracle prelude-go-tools))))
   (let ((path (concat prelude-go-path "/bin")))
     (add-to-list 'exec-path path)
     (setenv "PATH" (concat (getenv "PATH") path-separator path))))
@@ -72,7 +72,7 @@
   (let ((env (getenv "GOPATH")))
     (setenv "GOPATH" prelude-go-path)
     (dolist (tool prelude-go-tools)
-      (let* ((url (nth 1 tool))
+      (let* ((url (cdr tool))
              (cmd (concat "go get " (if flag (concat flag " ")) url))
              (result (shell-command-to-string cmd)))
         (message "Go tool %s: %s" (car tool) cmd)
@@ -122,9 +122,11 @@
                                (run-hooks 'prelude-go-mode-hook)))
 
      ;; Enable go-oracle-mode if available
-     (when (executable-find "oracle")
-       (autoload 'go-oracle-mode "oracle")
-       (add-hook 'go-mode-hook 'go-oracle-mode))))
+     (let ((oracle (executable-find "oracle")))
+       (when oracle
+         (setq go-oracle-command oracle)
+         (autoload 'go-oracle-mode "oracle")
+         (add-hook 'go-mode-hook 'go-oracle-mode)))))
 
 (provide 'prelude-go)
 ;;; prelude-go.el ends here

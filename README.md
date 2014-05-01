@@ -23,6 +23,6 @@ TODO: gotest.el to MELPA, in some form.
 ## Go tools
 
 Most of the Emacs Go packages have hard or soft dependencies on
-programs installed via `go get', such as `gocode', `golint', etc.
+programs installed via `go get`, such as `gocode`, `golint`, etc.
 You can install these tools using: <kbd>M-x prelude-go-install-tools</kbd>
 And update the tool using: <kbd>M-x prelude-go-update-tools</kbd>
