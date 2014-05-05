@@ -51,10 +51,10 @@
                             company-go
                             go-eldoc
                             go-errcheck
+                            go-projectile
                             golint
-                            go-projectile))
+                            gotest))
 
-(require 'gotest) ;; TODO: >> packages
 (require 'go-projectile)
 
 ;; add our $GOPATH/bin

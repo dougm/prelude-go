@@ -13,13 +13,6 @@ following to your `prelude-modules.el`:
 (require 'prelude-go)
 ```
 
-Add the `gotest.el` repo to your `prelude/vendor`:
-```bash
-$ git clone https://github.com/dougm/gotest.el
-```
-
-TODO: gotest.el to MELPA, in some form.
-
 ## Go tools
 
 Most of the Emacs Go packages have hard or soft dependencies on
