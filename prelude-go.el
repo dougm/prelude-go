@@ -32,20 +32,8 @@
 
 (require 'prelude-programming)
 
-(defvar prelude-go-path (concat prelude-dir "prelude-go-gopath")
-  "GOPATH for prelude-go tools.")
-
 (defvar prelude-go-smartparens t
   "Enable smartparens enhancements.")
-
-(defvar prelude-go-tools
-  '((gocode    . "github.com/nsf/gocode")
-    (golint    . "github.com/golang/lint/golint")
-    (godef     . "code.google.com/p/rog-go/exp/cmd/godef")
-    (goimports . "github.com/bradfitz/goimports")
-    (errcheck  . "github.com/kisielk/errcheck")
-    (oracle    . "code.google.com/p/go.tools/cmd/oracle"))
-  "Import paths for Go tools.")
 
 (prelude-require-packages '(go-mode
                             company-go
@@ -57,41 +45,8 @@
 
 (require 'go-projectile)
 
-;; add our $GOPATH/bin
-(when prelude-go-path
-  ;; TODO: oracle.el is not package.el compliant
-  (add-to-list 'load-path (concat prelude-go-path "/src/"
-                                  (cdr (assq 'oracle prelude-go-tools))))
-  (let ((path (concat prelude-go-path "/bin")))
-    (add-to-list 'exec-path path)
-    (setenv "PATH" (concat (getenv "PATH") path-separator path))))
-
 ;; Ignore go test -c output files
 (add-to-list 'completion-ignored-extensions ".test")
-
-(defun prelude-go-get-tools (&optional flag)
-  "Install go related tools via go get.  Optional FLAG to update."
-  (or prelude-go-path (error "Error: prelude-go-path not set"))
-  (let ((env (getenv "GOPATH")))
-    (setenv "GOPATH" prelude-go-path)
-    (dolist (tool prelude-go-tools)
-      (let* ((url (cdr tool))
-             (cmd (concat "go get " (if flag (concat flag " ")) url))
-             (result (shell-command-to-string cmd)))
-        (message "Go tool %s: %s" (car tool) cmd)
-        (unless (string= "" result)
-          (error result))))
-    (setenv "GOPATH" env)))
-
-(defun prelude-go-install-tools ()
-  "Install go related tools."
-  (interactive)
-  (prelude-go-get-tools))
-
-(defun prelude-go-update-tools ()
-  "Update go related tools."
-  (interactive)
-  (prelude-go-get-tools "-u"))
 
 (defun prelude-go-open-pair (id action context)
   "Open a new pair with newline and indent.

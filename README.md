@@ -12,10 +12,3 @@ following to your `prelude-modules.el`:
 ```el
 (require 'prelude-go)
 ```
-
-## Go tools
-
-Most of the Emacs Go packages have hard or soft dependencies on
-programs installed via `go get`, such as `gocode`, `golint`, etc.
-You can install these tools using: <kbd>M-x prelude-go-install-tools</kbd>
-And update the tool using: <kbd>M-x prelude-go-update-tools</kbd>
