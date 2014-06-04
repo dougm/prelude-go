@@ -32,9 +32,6 @@
 
 (require 'prelude-programming)
 
-(defvar prelude-go-smartparens t
-  "Enable smartparens enhancements.")
-
 (prelude-require-packages '(go-mode
                             company-go
                             go-eldoc
@@ -47,16 +44,6 @@
 
 ;; Ignore go test -c output files
 (add-to-list 'completion-ignored-extensions ".test")
-
-(defun prelude-go-open-pair (id action context)
-  "Open a new pair with newline and indent.
-ID is used to look-up the pair close.  ACTION and CONTEXT are ignored."
-  (let ((c (string-to-char (plist-get (sp-get-pair id) :close))))
-    (when (eq (following-char) c)
-      (newline)
-      (indent-according-to-mode)
-      (forward-line -1)
-      (indent-according-to-mode))))
 
 (eval-after-load 'go-mode
   '(progn
@@ -92,12 +79,6 @@ ID is used to look-up the pair close.  ACTION and CONTEXT are ignored."
 
      (add-hook 'go-mode-hook (lambda ()
                                (run-hooks 'prelude-go-mode-hook)))
-
-     ;; smartparens enhancements
-     (when prelude-go-smartparens
-       (dolist (key '("{" "("))
-        (sp-local-pair 'go-mode key nil :post-handlers
-                       '((prelude-go-open-pair "RET")))))
 
      ;; Enable go-oracle-mode if available
      (let ((oracle (executable-find "oracle")))
