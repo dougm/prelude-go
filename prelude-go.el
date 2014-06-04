@@ -61,11 +61,12 @@ ID is used to look-up the pair close.  ACTION and CONTEXT are ignored."
 (eval-after-load 'go-mode
   '(progn
      (defun prelude-go-mode-defaults ()
-       ;; Key bindings (TODO: should probably be elsewhere)
+       ;; Default key bindings for gotest.el
        (let ((map go-mode-map))
-         (define-key map (kbd "C-c C-p") 'go-test-current-project) ;; current package, really
-         (define-key map (kbd "C-c C-f") 'go-test-current-file)
-         (define-key map (kbd "C-c C-t") 'go-test-current-test))
+         (define-key map (kbd "C-c a") 'go-test-current-project) ;; current package, really
+         (define-key map (kbd "C-c m") 'go-test-current-file)
+         (define-key map (kbd "C-c .") 'go-test-current-test)
+         (define-key map (kbd "C-c b") 'go-run))
 
        ;; Prefer goimports to gofmt if installed
        (let ((goimports (executable-find "goimports")))
